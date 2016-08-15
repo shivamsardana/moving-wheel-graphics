@@ -6,7 +6,7 @@
  
 int l = 1;
  
-void ddaline(int x1, int y1, int x2, int y2)
+void ddaline(int x1, int y1, int x2, int y2)       //DDA Line Algorithm continues
 {
  
     int s, dx, dy, m;
@@ -36,35 +36,35 @@ void ddaline(int x1, int y1, int x2, int y2)
 }
  
  
-void plotpoints1(int x, int y, int cx, int cy)
+void plotpoints1(int x, int y, int vx, int vy)
 {
-    putpixel(cx + x, cy + y, 15);
-    putpixel(cx - x, cy - y, 15);
-    putpixel(cx - y, cy + x, 15);
-    putpixel(cx + y, cy - x, 15);
+    putpixel(vx + x, vy + y, 15);                //putpixel plots a point in the color defined by color at (x,y)
+    putpixel(vx - x, vy - y, 15);
+    putpixel(vx - y, vy + x, 15);
+    putpixel(vx + y, vy - x, 15);
     if (l % 20 == 0) {
-	ddaline(cx - x, cy - y, cx + x, cy + y);
-	ddaline(cx - y, cy + x, cx + y, cy - x);
+	ddaline(vx - x, vy - y, vx + x, vy + y);
+	ddaline(vx - y, vy + x, vx + y, vy - x);
     }
     l++;
 }
  
-void plotpoints2(int x, int y, int cx, int cy)
+void plotpoints2(int x, int y, int vx, int vy)
 {
  
-    putpixel(cx - x, cy + y, 15);
-    putpixel(cx + x, cy - y, 15);
-    putpixel(cx + y, cy + x, 15);
-    putpixel(cx - y, cy - x, 15);
+    putpixel(vx - x, vy + y, 15);
+    putpixel(vx + x, vy - y, 15);
+    putpixel(vx + y, vy + x, 15);
+    putpixel(vx - y, vy - x, 15);
     if (l % 20 == 0) {
-	ddaline(cx + x, cy - y, cx - x, cy + y);
-	ddaline(cx - y, cy - x, cx + y, cy + x);
+	ddaline(vx + x, vy - y, vx - x, vy + y);
+	ddaline(vx - y, vy - x, vx + y, vy + x);
     }
     l++;
 }
  
  
-void mcircle(int cx, int cy, int r)
+void mcircle(int vx, int vy, int r)                  //Mid point circle Algorithm calling
 {
     int x = 0, y, p;
  
@@ -73,7 +73,7 @@ void mcircle(int cx, int cy, int r)
  
  
     while (x < y) {
-	plotpoints1(x, y, cx, cy);
+	plotpoints1(x, y, vx, vy);
 	x++;
 	if (p < 0)
 	    p += 2 * x + 1;
@@ -87,7 +87,7 @@ void mcircle(int cx, int cy, int r)
  
     x = y + 1;
     while (abs(x) > 0) {
-	plotpoints2(x, y, cx, cy);
+	plotpoints2(x, y, vx, vy);
 	x--;
 	if (p >= 0)
 	    p = p - 2 * x - 1;
@@ -109,7 +109,7 @@ void main()
 	    i = -200;
 	cleardevice();
 	mcircle(100 + (i++), 200, 100);
-	delay(90);
+	delay(90);                                   // delay 
 	i++;
     }
     getch();
